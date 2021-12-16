@@ -32,9 +32,9 @@ export default function FoodList() {
         axios.get('https://api.spoonacular.com/recipes/complexSearch',{
             params:{
                 query:searchInput,
-                number:6,
+                number:1,
                 offset:0,
-                apiKey:'c99035ed6b4c4c9fbe882952db26e62c'
+                apiKey:'2647dec450164fb4a189c2996ddc9983'
             },
             headers:{
                 'Content-Type':'application/json'
@@ -43,7 +43,6 @@ export default function FoodList() {
             console.log(response)
             setFoodList(response.data.results)
         })
-
     }
   return (
     <ThemeProvider theme={theme}>
@@ -115,7 +114,7 @@ export default function FoodList() {
                     </Typography> */}
                   </CardContent>
                   <CardActions>
-                    <Link to="/recipe">
+                    <Link to={`/recipe/${food.id}`}>
                       <Button size="small">View</Button>
                     </Link>
                     {/* <Button size="small">Add to list</Button> */}
