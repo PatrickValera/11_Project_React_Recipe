@@ -1,19 +1,30 @@
-import './App.css';
-import FoodList from './screens/FoodList'
-import FoodRecipe from './screens/FoodRecipe'
+import "./App.css";
+import {  ThemeProvider } from "@mui/material/styles";
 
-import {BrowserRouter as Router,Routes, Route} from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+// COMPONENT IMPORTS
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import QueryScreen from "./screens/QueryScreen";
+import RecipeScreen from "./screens/RecipeScreen";
+import {defaultTheme} from './themes/defaultTheme'
 function App() {
-  return (
-    <div className="App">
-      <Router>
-      <Routes>
-        <Route path='/' element={<FoodList/>}/>
-        <Route path='/recipe/:id'  element={<FoodRecipe/>}/>
-      </Routes>
-      </Router>
-    </div>
-  );
+	return (
+		<ThemeProvider theme={defaultTheme}>
+			<div className='App'>
+
+				<Router>
+				<Header />
+					<Routes>
+						<Route path='/*' element={<QueryScreen />} />
+						<Route path='/recipe/:id' element={<RecipeScreen />} />
+					</Routes>
+				</Router>
+
+				<Footer />
+			</div>
+		</ThemeProvider>
+	);
 }
 
 export default App;
