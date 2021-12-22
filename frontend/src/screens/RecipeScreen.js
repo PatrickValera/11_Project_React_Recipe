@@ -43,7 +43,7 @@ const FoodRecipe = () => {
             {loading ? <h3>Loading</h3> :
                 <Container maxWidth='md'>
                     {/* START FOOD HEADER */}
-                    <Box display='block' sx={{ textAlign: 'center', p: '30px 0' }}>
+                    <Box display='block' sx={{ textAlign: 'center', pt: '30px' }}>
                         <Typography variant='h4' sx={{ display: 'block' }}>{food.title}</Typography>
                         <Box display='inline-flex' sx={{ gap: '15px' }}>
                             <Typography variant='body1' ><strong>{food.readyInMinutes}m</strong> prep</Typography>
@@ -62,11 +62,8 @@ const FoodRecipe = () => {
                     </Box>
                     {/* ENDFOOD HEADER */}
                     {/* START FOOD SUMMARY */}
-                    <Box>
-                        <Button variant='contained'>SAVE RECIPE</Button>
-                    </Box>
-                    <Box>
-                        <Typography variant='body2' dangerouslySetInnerHTML={{ __html: food.summary }} />
+                    <Box sx={{p: '30px 0' }}>
+                        <Button disableElevation color='primary' variant='contained'><Typography color='background.main'><i className="fas fa-heart"></i> SAVE RECIPE</Typography></Button>
                     </Box>
                     {/* END FOOD SUMMARY */}
                     {/* START FOOD INGREDIENTS AND STEPS */}
@@ -74,6 +71,7 @@ const FoodRecipe = () => {
                         <Tabs value={currentTab} onChange={handleChange} aria-label="basic tabs example">
                             <Tab label="Ingredient" {...a11yProps(0)} />
                             <Tab label="Method Steps" {...a11yProps(1)} />
+                            <Tab label="Summary" {...a11yProps(2)} />
                         </Tabs>
                     </Box>
                     <TabPanel value={currentTab} index={0}>
@@ -81,6 +79,9 @@ const FoodRecipe = () => {
                     </TabPanel>
                     <TabPanel value={currentTab} index={1}>
                         <InstructionsPanel instructions={food.analyzedInstructions[0].steps} />
+                    </TabPanel>
+                    <TabPanel value={currentTab} index={2}>
+                            <Typography variant='body2' dangerouslySetInnerHTML={{ __html: food.summary }} />
                     </TabPanel>
                     {/* END FOOD INGREDIENTS AND STEPS */}
                 </Container>
