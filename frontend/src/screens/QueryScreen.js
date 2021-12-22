@@ -1,46 +1,68 @@
-import * as React from "react";
-import Button from "@mui/material/Button";
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import Grid from "@mui/material/Grid";
-import Stack from "@mui/material/Stack";
-import Box from "@mui/material/Box";
-import Typography from "@mui/material/Typography";
-import Container from "@mui/material/Container";
-import { TextField } from "@mui/material";
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { Container, Box, Stack, Grid } from "@mui/material";
+import { TextField, Typography, Button, Pagination } from "@mui/material";
+import { useSearchParams } from 'react-router-dom'
 import axios from "axios";
-import { Link } from "react-router-dom";
-
-export default function QueryScreen({ history }) {
+import FoodCard from '../components/FoodCard'
+// import mockdata from './datafoods.json'
+export default function QueryScreen() {
+	const [params, setParams] = useSearchParams()
 	const [foodList, setFoodList] = useState([]);
 	const [searchInput, setSearchInput] = useState("");
-	const searchFood = () => {
-		axios
-			.get("https://api.spoonacular.com/recipes/complexSearch", {
-				params: {
-					query: searchInput,
-					number: 1,
-					offset: 0,
-					apiKey: "2647dec450164fb4a189c2996ddc9983",
-				},
-				headers: {
-					"Content-Type": "application/json",
-				},
-			})
-			.then((response) => {
-				setFoodList(response.data.results);
-			});
+	const [loading, setLoading] = useState(false)
+	const [page, setPage] = useState(1)
+	const [pageCount, setPageCount] = useState(1)
+	const searchFood = (e) => {
+		if (!searchInput) return
+		setLoading(true)
+		setTimeout(() => {
+			setLoading(false)
+			setParams({ name: searchInput, page: '1' })
+		}, 1500)
 	};
+	const onEntrPress = (e) => {
+		if (e.key === 'Enter') searchFood()
+	}
+	const hanldePageChange = (e, value) => {
+		setPage(value)
+		setParams({ name: searchInput, page: value })
+		console.log(value)
+	}
+	useEffect(() => {
+		if (params.get('name')) {
+			axios
+				.get("https://api.spoonacular.com/recipes/complexSearch", {
+					params: {
+						query: params.get('name'),
+						number: 6,
+						offset: 6 * (page - 1),
+						apiKey: "2647dec450164fb4a189c2996ddc9983",
+					},
+					headers: {
+						"Content-Type": "application/json",
+					},
+				})
+				.then((response) => {
+					setPageCount((Math.ceil(response.data.totalResults / 6)))
+					setFoodList(response.data.results);
+				});
+		}
+		// console.log('in UE', params.get('name'))
+		// if (params.get('name')) setFoodList(mockdata.results)
+		else {
+			setFoodList([])
+			setSearchInput('')
+		}
+		return () => {
+
+		}
+	}, [params])
 	return (
-		<>
-			<main>
-				{/* Hero unit */}
+		<Box sx={{ backgroundColor: 'background.main', minHeight: '100vh' }}>
+			<Container sx={{ py: 8 }} maxWidth='md'>
+				{/* Head and Search */}
 				<Box
 					sx={{
-						bgcolor: "background.paper",
 						pt: 4,
 						pb: 2,
 					}}
@@ -48,12 +70,12 @@ export default function QueryScreen({ history }) {
 					<Container maxWidth='sm'>
 						<Typography
 							component='h1'
-							variant='h3'
+							variant='h4'
 							align='center'
 							color='text.primary'
 							gutterBottom
 						>
-							Find Great Recipes For Cooking
+							Find Your Next Dish Recipe
 						</Typography>
 						<Typography
 							variant='h5'
@@ -63,70 +85,45 @@ export default function QueryScreen({ history }) {
 						></Typography>
 						<Stack
 							sx={{ pt: 4 }}
-							direction='row'
+							direction={{xs:'column',sm:'row'}}
 							spacing={2}
 							justifyContent='center'
 						>
 							<TextField
 								value={searchInput}
 								onChange={(e) => setSearchInput(e.target.value)}
+								onKeyDown={onEntrPress}
+								autoComplete='off'
 								fullWidth
-								label='Food Name'
+								label='Search Recipe'
 								id='fullWidth'
 							/>
-							<Button onClick={searchFood} variant='outlined'>
-								Search
+							{/* <Link to={{ path: '/search', search: `?name=${searchInput}` }}> */}
+							<Button disabled={loading} onClick={searchFood} variant='outlined'>
+								{loading ? "loading" : 'Search'}
 							</Button>
+							{/* </Link> */}
 						</Stack>
 					</Container>
 				</Box>
-				<Container sx={{ py: 8 }} maxWidth='md'>
-					{/* End hero unit */}
-					<Grid container spacing={4}>
-						{foodList.map((food) => (
-							<Grid item key={food} xs={12} sm={6} md={4}>
-								<Card
-									sx={{
-										height: "100%",
-										display: "flex",
-										flexDirection: "column",
-									}}
-								>
-									<CardMedia
-										component='img'
-										sx={
-											{
-												// 16:9
-											}
-										}
-										image={food.image}
-										alt='random'
-									/>
-									<CardContent sx={{ flexGrow: 1 }}>
-										<Typography
-											gutterBottom
-											variant='h5'
-											component='h2'
-										>
-											{food.title}
-										</Typography>
-										{/* <Typography>
-                      This is a media card. You can use this section to describe the
-                      content.
-                    </Typography> */}
-									</CardContent>
-									<CardActions>
-										<Link to={`/recipe/${food.id}`}>
-											<Button size='small'>View</Button>
-										</Link>
-										{/* <Button size="small">Add to list</Button> */}
-									</CardActions>
-								</Card>
-							</Grid>
-						))}
-					</Grid>
-				</Container>
-			</main>
-		</>
+				{/* Head and Search End */}
+				{/* Results Container */}
+				{loading && 'LOADING'}
+				{foodList.length > 0 &&
+					<Box display='flex' sx={{ flexWrap: 'wrap', justifyContent: 'center' }}>
+						<Grid container spacing={4}>
+							{foodList.map((food) => (
+								<Grid item key={food.title} xs={6} sm={6} md={4}>
+									<FoodCard food={food} />
+								</Grid>
+							))}
+						</Grid>
+						<Pagination count={pageCount} page={page} onChange={hanldePageChange} color="primary" sx={{ pt: '40px' }} />
+
+					</Box>}
+				{/* Results Container End */}
+
+			</Container>
+		</Box>
 	);
 }

@@ -7,6 +7,7 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import QueryScreen from "./screens/QueryScreen";
 import RecipeScreen from "./screens/RecipeScreen";
+import LandingScreen from "./screens/LandingScreen";
 import {defaultTheme} from './themes/defaultTheme'
 function App() {
 	return (
@@ -16,7 +17,8 @@ function App() {
 				<Router>
 				<Header />
 					<Routes>
-						<Route path='/*' element={<QueryScreen />} />
+						<Route path='/' element={<LandingScreen />} />
+						<Route path='search/*' element={<QueryScreen />} />
 						<Route path='/recipe/:id' element={<RecipeScreen />} />
 					</Routes>
 				</Router>

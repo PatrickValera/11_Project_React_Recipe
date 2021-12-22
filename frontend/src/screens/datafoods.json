@@ -1,0 +1,43 @@
+{
+    "results": [
+        {
+            "id": 649195,
+            "title": "Lamb Burgers With Tzatziki Sauce",
+            "image": "https://spoonacular.com/recipeImages/649195-312x231.jpg",
+            "imageType": "jpg"
+        },
+        {
+            "id": 664011,
+            "title": "Turkey Burgers",
+            "image": "https://spoonacular.com/recipeImages/664011-312x231.jpg",
+            "imageType": "jpg"
+        },
+        {
+            "id": 1096267,
+            "title": "Turkey Burgers with Slaw",
+            "image": "https://spoonacular.com/recipeImages/1096267-312x231.jpg",
+            "imageType": "jpg"
+        },
+        {
+            "id": 659058,
+            "title": "Salmon Burgers With Roasted Red Pepper Aioli",
+            "image": "https://spoonacular.com/recipeImages/659058-312x231.jpg",
+            "imageType": "jpg"
+        },
+        {
+            "id": 642540,
+            "title": "Falafel Burgers",
+            "image": "https://spoonacular.com/recipeImages/642540-312x231.jpg",
+            "imageType": "jpg"
+        },
+        {
+            "id": 1096060,
+            "title": "Chicken Burgers with Spiced Rub",
+            "image": "https://spoonacular.com/recipeImages/1096060-312x231.jpg",
+            "imageType": "jpg"
+        }
+    ],
+    "offset": 0,
+    "number": 6,
+    "totalResults": 37
+}

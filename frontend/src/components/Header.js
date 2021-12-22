@@ -7,10 +7,10 @@ const Header = () => {
 		<>
 			<MuiAppBar position='relative'>
 				<Toolbar>
-					{/* <CameraIcon sx={{ mr: 2 }} /> */}
-					<Typography variant='h6' color='inherit' noWrap>
-						<Link to='/'>Great Recipes</Link>
-					</Typography>
+					{/* <CameraIcon sx={{ mr: 2 }} /> */}<Link to='/search'>
+					<Typography variant='h5'color='background.main'  noWrap>
+						Food Recipes
+					</Typography></Link>
 				</Toolbar>
 			</MuiAppBar>
 		</>
