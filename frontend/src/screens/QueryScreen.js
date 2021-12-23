@@ -4,6 +4,7 @@ import { TextField, Typography, Button, Pagination } from "@mui/material";
 import { useSearchParams } from 'react-router-dom'
 import axios from "axios";
 import FoodCard from '../components/FoodCard'
+import Loading from "../components/Loading";
 // import mockdata from './datafoods.json'
 export default function QueryScreen() {
 	const [params, setParams] = useSearchParams()
@@ -108,8 +109,8 @@ export default function QueryScreen() {
 				</Box>
 				{/* Head and Search End */}
 				{/* Results Container */}
-				{loading && 'LOADING'}
-				{foodList.length > 0 &&
+				{loading && <Loading/>}
+				{foodList.length > 0 &&!loading&&
 					<Box display='flex' sx={{ flexWrap: 'wrap', justifyContent: 'center' }}>
 						<Grid container spacing={4}>
 							{foodList.map((food) => (

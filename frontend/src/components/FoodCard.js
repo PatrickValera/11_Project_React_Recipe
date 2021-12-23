@@ -36,7 +36,7 @@ const FoodCard = ({ food }) => {
                 </Typography>
             </CardContent>
             <CardActions>
-                <Link to={`/recipe/${food.id}`}>
+                <Link to={`/main/recipe/${food.id}`}>
                     <Button size='small'>View</Button>
                 </Link>
                 {/* <Button size="small">Add to list</Button> */}
