@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Container, Box, Stack, Grid } from "@mui/material";
+import React, { useState, useEffect, useRef } from "react";
+import { Container, Box, Stack, Grid, Grow } from "@mui/material";
 import { TextField, Typography, Button, Pagination } from "@mui/material";
 import { useSearchParams } from 'react-router-dom'
 import axios from "axios";
@@ -13,13 +13,13 @@ export default function QueryScreen() {
 	const [loading, setLoading] = useState(false)
 	const [page, setPage] = useState(1)
 	const [pageCount, setPageCount] = useState(1)
-	const searchFood = (e) => {
-		if (!searchInput) return
+	const [pageLoaded,setPageLoaded]=useState(false)
+	const prevSearch=useRef()
+	const searchFood =(e) => {
+		prevSearch.current=searchInput
 		setLoading(true)
-		setTimeout(() => {
-			setLoading(false)
-			setParams({ name: searchInput, page: '1' })
-		}, 1500)
+		setFoodList([])
+		setParams({ name: searchInput, page: '1' })
 	};
 	const onEntrPress = (e) => {
 		if (e.key === 'Enter') searchFood()
@@ -46,6 +46,8 @@ export default function QueryScreen() {
 				.then((response) => {
 					setPageCount((Math.ceil(response.data.totalResults / 6)))
 					setFoodList(response.data.results);
+			setLoading(false)
+
 				});
 		}
 		// console.log('in UE', params.get('name'))
@@ -58,10 +60,14 @@ export default function QueryScreen() {
 
 		}
 	}, [params])
+	useEffect(()=>{
+		setPageLoaded(true)
+	},([]))
 	return (
 		<Box sx={{ backgroundColor: 'background.main', minHeight: '100vh' }}>
 			<Container sx={{ py: 8 }} maxWidth='md'>
 				{/* Head and Search */}
+				<Grow in={pageLoaded}>
 				<Box
 					sx={{
 						pt: 4,
@@ -107,6 +113,7 @@ export default function QueryScreen() {
 						</Stack>
 					</Container>
 				</Box>
+				</Grow>
 				{/* Head and Search End */}
 				{/* Results Container */}
 				{loading && <Loading/>}

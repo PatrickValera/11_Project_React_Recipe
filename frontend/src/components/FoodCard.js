@@ -1,11 +1,19 @@
-import React, { useState } from 'react'
-import { Card, CardMedia, CardContent, CardActions, Typography, Button, Box } from '@mui/material'
+import React, { useState,useEffect } from 'react'
+import { Card, CardMedia, CardContent, CardActions, Typography, Button, Box, Fade } from '@mui/material'
 import { Link } from "react-router-dom";
 import ImageSkeleton from './ImageSkeleton';
 const FoodCard = ({ food }) => {
     const [loading, setLoading] = useState(true)
     const [imgLoaded, setImgLoaded] = useState(false)
+    const [pageLoaded,setPageLoaded]=useState(false)
+    useEffect(() => {
+        setPageLoaded(true)
+        return()=>{
+            setPageLoaded(false)
+        }
+    }, [])
     return (
+        <Fade in={pageLoaded}>
         <Card
             sx={{
                 height: "100%",
@@ -26,7 +34,7 @@ const FoodCard = ({ food }) => {
                 {/* <ImageSkeleton/> */}
                 {!imgLoaded && <ImageSkeleton />}
             </Box>
-            <CardContent sx={{ flexGrow: 1 }}>
+            <CardContent sx={{ flexFade: 1 }}>
                 <Typography
                     gutterBottom
                     variant='subtitle1'
@@ -42,6 +50,7 @@ const FoodCard = ({ food }) => {
                 {/* <Button size="small">Add to list</Button> */}
             </CardActions>
         </Card>
+        </Fade>
     )
 }
 
