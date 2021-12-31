@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams,useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import PropTypes from 'prop-types';
 import { Container, Typography, Box, Card, CardMedia, Stack, Tabs, Tab, Button, Skeleton } from '@mui/material'
@@ -7,11 +7,13 @@ import mockData from './data.json'
 import IngredientsPanel from '../components/IngredientsPanel';
 import InstructionsPanel from '../components/InstructionsPanel';
 import ImageSkeleton from '../components/ImageSkeleton';
+import Loading from '../components/Loading';
 const FoodRecipe = () => {
     const [loading, setLoading] = useState(true)
     const [imgLoaded, setImgLoaded] = useState(false)
     const [food, setFood] = useState(null)
     const [currentTab, setCurrentTab] = useState(0)
+    let navigate=useNavigate()
     const { id } = useParams()
     useEffect(() => {
         axios.get(`https://api.spoonacular.com/recipes/${id}/information?includeNutrition=false`,{
@@ -26,6 +28,7 @@ const FoodRecipe = () => {
             setFood(data)
             setLoading(false)
         })
+        
         // setFood(mockData)
         // setLoading(false)
 
@@ -40,8 +43,9 @@ const FoodRecipe = () => {
 
     return (
         <>
-            {loading ? <h3>Loading</h3> :
+            {loading ? <Loading/> :
                 <Container maxWidth='md'>
+                    <Button variant='outlined' sx={{mt:2}} onClick={(()=>navigate(-1))}><i className="fas fa-arrow-left"></i> GO BACK</Button>
                     {/* START FOOD HEADER */}
                     <Box display='block' sx={{ textAlign: 'center', pt: '30px' }}>
                         <Typography variant='h4' sx={{ display: 'block' }}>{food.title}</Typography>

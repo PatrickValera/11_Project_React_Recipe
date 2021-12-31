@@ -8,7 +8,7 @@ const Header = () => {
 			<MuiAppBar position='relative'>
 				<Toolbar>
 					{/* <CameraIcon sx={{ mr: 2 }} /> */}<Link to='/main/search'>
-					<Typography variant='h5'color='background.main'  noWrap>
+					<Typography variant='h4'color='background.main' fontWeight='600' fontFamily='Dosis' noWrap>
 						Food Recipes
 					</Typography></Link>
 				</Toolbar>

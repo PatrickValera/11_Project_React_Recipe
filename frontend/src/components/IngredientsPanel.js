@@ -16,8 +16,8 @@ function IngredientItem({ item }) {
             <IconButton onClick={() => setChecked(state => !state)} color='primary'>
                 {checked ? <i className="fas fa-check-circle"></i> : <i className="far fa-circle"></i>}
             </IconButton>
-            <Typography variant='body1' sx={{flexGrow:'1'}}>{item.name.toUpperCase()}</Typography>
-            <Typography variant='body2' color='grey.600'>{item.amount} {item.unit?item.unit:'count'}</Typography>
+            <Typography variant='body1' fontWeight='500' sx={{flexGrow:'1'}}>{item.name}</Typography>
+            <Typography variant='body2' color='grey.600'>{item.amount.toString()} {item.unit?item.unit:'count'}</Typography>
         </Box>
     )
 }

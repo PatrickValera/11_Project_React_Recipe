@@ -39,6 +39,7 @@ const FoodCard = ({ food }) => {
                     gutterBottom
                     variant='subtitle1'
                     component='h2'
+                    fontSize={{xs:'.8rem',sm:'1rem'}}
                 >
                     {food.title}
                 </Typography>

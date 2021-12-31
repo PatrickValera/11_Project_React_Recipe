@@ -5,9 +5,10 @@ import { useSearchParams } from 'react-router-dom'
 import axios from "axios";
 import FoodCard from '../components/FoodCard'
 import Loading from "../components/Loading";
-// import mockdata from './datafoods.json'
+import mockdata from './datafoods.json'
 export default function QueryScreen() {
 	const [params, setParams] = useSearchParams()
+	const [error,setError]=useState('')
 	const [foodList, setFoodList] = useState([]);
 	const [searchInput, setSearchInput] = useState("");
 	const [loading, setLoading] = useState(false)
@@ -16,10 +17,15 @@ export default function QueryScreen() {
 	const [pageLoaded,setPageLoaded]=useState(false)
 	const prevSearch=useRef()
 	const searchFood =(e) => {
+		if(!searchInput)return
 		prevSearch.current=searchInput
 		setLoading(true)
 		setFoodList([])
 		setParams({ name: searchInput, page: '1' })
+		// MOCK DATA
+		// setParams({ name: 'mockdata', page: '1' })
+		// END DATA
+
 	};
 	const onEntrPress = (e) => {
 		if (e.key === 'Enter') searchFood()
@@ -44,18 +50,26 @@ export default function QueryScreen() {
 					},
 				})
 				.then((response) => {
-					setPageCount((Math.ceil(response.data.totalResults / 6)))
-					setFoodList(response.data.results);
+					if(response.data.totalResults===0&&searchInput)setError(`No Results for ${searchInput}`)
+					else{
+						setError("")
+						setPageCount((Math.ceil(response.data.totalResults / 6)))
+						setFoodList(response.data.results);
+					}
+				
 			setLoading(false)
 
 				});
 		}
-		// console.log('in UE', params.get('name'))
-		// if (params.get('name')) setFoodList(mockdata.results)
+
 		else {
 			setFoodList([])
 			setSearchInput('')
 		}
+		// MOCK DATA
+		// if (params.get('name')) setFoodList(mockdata.results)
+		setLoading(false)
+		// END DATA
 		return () => {
 
 		}
@@ -84,14 +98,9 @@ export default function QueryScreen() {
 						>
 							Find Your Next Dish Recipe
 						</Typography>
-						<Typography
-							variant='h5'
-							align='center'
-							color='text.secondary'
-							paragraph
-						></Typography>
+					
 						<Stack
-							sx={{ pt: 4 }}
+							sx={{ pt: 4, mb:1 }}
 							direction={{xs:'column',sm:'row'}}
 							spacing={2}
 							justifyContent='center'
@@ -111,6 +120,12 @@ export default function QueryScreen() {
 							</Button>
 							{/* </Link> */}
 						</Stack>
+						<Typography
+							variant='h6'
+							align='center'
+							color='error'
+							paragraph
+						>{error&&error}</Typography>
 					</Container>
 				</Box>
 				</Grow>
